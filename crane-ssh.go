@@ -15,7 +15,8 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		log.Fatal("Expected 'generate' subcommand")
+		printHelp()
+		return
 	}
 
 	switch os.Args[1] {
@@ -27,6 +28,13 @@ func main() {
 		keyName := generateCmd.String("keyName", "", "Name of the key file (default is id_rsa)")
 		passphrase := generateCmd.String("passphrase", "", "SSH key passphrase")
 
+		generateCmd.Usage = func() {
+			fmt.Println("Usage: crane-ssh generate [options]")
+			fmt.Println("\nOptions:")
+			generateCmd.PrintDefaults()
+			fmt.Println("\nExample:")
+			fmt.Println("crane-ssh generate --host=github.com --alias=github.com --keyName=id_rsa")
+		}
 		generateCmd.Parse(os.Args[2:])
 
 		if *host == "" {
@@ -57,9 +65,8 @@ func main() {
 		}
 
 		runGenerate(*host, *alias, *keyName, *passphrase)
-
 	default:
-		log.Fatalf("Unknown subcommand: %s", os.Args[1])
+		printHelp()
 	}
 }
 
@@ -165,4 +172,11 @@ func readInput() string {
 	reader := bufio.NewReader(os.Stdin)
 	text, _ := reader.ReadString('\n')
 	return strings.TrimSpace(text)
+}
+
+func printHelp() {
+	fmt.Println("Usage: crane-ssh <command> [options]")
+	fmt.Println("\nCommands:")
+	fmt.Println("  generate   Generate a new SSH key pair, configure SSH settings in ~/.ssh/config and copies public key to clipboard")
+	fmt.Println("\nUse \"crane-ssh <command> --help\" for more information about a command.")
 }
