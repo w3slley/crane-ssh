@@ -24,29 +24,53 @@ func main() {
 
 		host := generateCmd.String("host", "", "The SSH server host (e.g., example.com)")
 		alias := generateCmd.String("alias", "", "The SSH alias for the host")
-		keyName := generateCmd.String("keyName", "id_rsa", "Name of the key file (default is id_rsa)")
+		keyName := generateCmd.String("keyName", "", "Name of the key file (default is id_rsa)")
+		passphrase := generateCmd.String("passphrase", "", "SSH key passphrase")
 
 		generateCmd.Parse(os.Args[2:])
 
-		if *host == "" || *alias == "" {
-			log.Fatal("Both --host and --alias flags are required for 'generate'.")
+		if *host == "" {
+			fmt.Print("Enter SSH host (which will be saved in the ~/.ssh/config file): ")
+			*host = readInput()
 		}
 
-		runGenerate(*host, *alias, *keyName)
+		if *alias == "" {
+			fmt.Print("Enter alias for the SSH host (which will be saved in the ~/.ssh/config file): ")
+			*alias = readInput()
+		}
+
+		if *keyName == "" {
+			fmt.Print("Enter file name in which to save the key (default: id_rsa saved in ~/.ssh/): ")
+			*keyName = readInput()
+		}
+
+		if *passphrase == "" {
+			fmt.Print("Enter passphrase (empty for no passphrase): ")
+			*passphrase = readInput()
+		}
+
+		if *host == "" || *alias == "" {
+			log.Fatal("Both host and alias are required for 'generate' command.")
+		}
+		if *keyName == "" {
+			*keyName = "id_rsa"
+		}
+
+		runGenerate(*host, *alias, *keyName, *passphrase)
 
 	default:
 		log.Fatalf("Unknown subcommand: %s", os.Args[1])
 	}
 }
 
-func runGenerate(host, alias, keyName string) {
+func runGenerate(host, alias, keyName, passphrase string) {
 	sshDir := filepath.Join(os.Getenv("HOME"), ".ssh")
 	pubKeyPath := filepath.Join(sshDir, keyName+".pub")
 
 	if _, err := os.Stat(pubKeyPath); os.IsNotExist(err) {
 		fmt.Println("No SSH key found. Generating a new one...")
 
-		err = generateSSHKey(sshDir, keyName)
+		err = generateSSHKey(sshDir, keyName, passphrase)
 		if err != nil {
 			log.Fatalf("Failed to generate SSH key: %v", err)
 		}
@@ -69,16 +93,14 @@ func runGenerate(host, alias, keyName string) {
 	if err != nil {
 		log.Fatalf("Failed to update SSH config: %v", err)
 	}
-
-	fmt.Printf("Host %s (%s) added to SSH config.\n", alias, host)
 }
 
-func generateSSHKey(sshDir string, keyName string) error {
+func generateSSHKey(sshDir, keyName, passphrase string) error {
 	if err := os.MkdirAll(sshDir, 0700); err != nil {
 		return fmt.Errorf("failed to create .ssh directory: %v", err)
 	}
 
-	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-b", "4096", "-f", filepath.Join(sshDir, keyName), "-N", "")
+	cmd := exec.Command("ssh-keygen", "-t", "rsa", "-b", "4096", "-f", filepath.Join(sshDir, keyName), "-N", passphrase)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -113,6 +135,7 @@ func addToSSHConfig(sshDir, host, alias, keyName string) error {
 		return fmt.Errorf("failed to write to SSH config file: %v", err)
 	}
 
+	fmt.Printf("Host %s (%s) added to SSH config.\n", alias, host)
 	return nil
 }
 
@@ -136,4 +159,10 @@ func hostExistsInConfig(configFilePath, alias string) bool {
 	}
 
 	return false
+}
+
+func readInput() string {
+	reader := bufio.NewReader(os.Stdin)
+	text, _ := reader.ReadString('\n')
+	return strings.TrimSpace(text)
 }
