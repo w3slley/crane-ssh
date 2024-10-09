@@ -24,11 +24,7 @@ func main() {
 
 		host := generateCmd.String("host", "", "The SSH server host (e.g., example.com)")
 		alias := generateCmd.String("alias", "", "The SSH alias for the host")
-		keyName := generateCmd.String("keyName", "", "Name of the key file (default is id_rsa)")
-
-		if *keyName == "" {
-			*keyName = "id_rsa"
-		}
+		keyName := generateCmd.String("keyName", "id_rsa", "Name of the key file (default is id_rsa)")
 
 		generateCmd.Parse(os.Args[2:])
 
