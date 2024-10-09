@@ -1,0 +1,34 @@
+# crane-ssh: a nicer way of configuring SSH keys
+## Requirements
+- Go (developed with v1.22.4)
+
+## Usage
+Run the `start.sh` script. It will compile the Go code and place the executable in `/usr/local/bin` (password is only necessary for that). Then, run
+```
+crane-ssh generate --help
+```
+
+to see the necessary flags the command `generate` requires.
+
+The common usecase for this tool, and in fact the reason I built it, is to make the process of setting SSH key pairs with platforms like Github or Gitlab way easier. If you want to create a new SSH key pair and add the public key to your Github account, you would do something like:
+
+```
+crane-ssh generate --host=github.com --alias=github.com --keyName=github
+```
+You could also simply run `crane-ssh generate` and add the values manually one by one. This would create a `github` and `github.pub` key pair in `.ssh/` and modify the `config` file to have:
+
+```
+Host github.com
+  HostName github.com
+  IdentityFile $HOME/.ssh/github
+  Preferredauthentications publickey
+  IdentitiesOnly yes
+```
+
+After the program finishes, you'll have the public key in your clipboard, so just go over Github and create a new SSH key. After that is done, check that it all works with:
+
+```
+ssh -T git@github.com
+```
+
+You should see `Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.`. The same process applies to Bitbucket, Gitlab or any repository hosting manager tool or application that requires setting up SSH key pais as a method of authentication.
