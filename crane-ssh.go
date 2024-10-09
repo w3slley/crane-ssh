@@ -104,7 +104,7 @@ func addToSSHConfig(sshDir, host, alias, keyName string) error {
 		return nil
 	}
 
-	configEntry := fmt.Sprintf("\nHost %s\n  HostName %s\n  IdentityFile %s\n  Preferredauthentications publickey\n  IdentitiesOnly yes", alias, host, filepath.Join(sshDir, keyName))
+	configEntry := fmt.Sprintf("\nHost %s\n  HostName %s\n  IdentityFile %s\n  Preferredauthentications publickey\n  IdentitiesOnly yes\n", alias, host, filepath.Join(sshDir, keyName))
 
 	file, err := os.OpenFile(configFilePath, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
