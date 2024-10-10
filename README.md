@@ -1,4 +1,6 @@
 # crane-ssh: a nicer way of configuring SSH keys
+The common usecase for this tool, and in fact the reason I built it, is to make the process of setting SSH key pairs with platforms like Github or Gitlab way easier. You just run the tool and it takes care of setting up the public and private keys (using `ssh-keygen`). At the end, you'll have the public key copied to the clipboard and all that is left is to go to the platform and paste the public key there.
+
 ## Requirements
 - Go (developed with v1.22.4)
 
@@ -8,10 +10,7 @@ Run the `start.sh` script. It will compile the Go code and place the executable 
 crane-ssh generate --help
 ```
 
-to see the necessary flags the command `generate` requires.
-
-The common usecase for this tool, and in fact the reason I built it, is to make the process of setting SSH key pairs with platforms like Github or Gitlab way easier. If you want to create a new SSH key pair and add the public key to your Github account, you would do something like:
-
+to see the necessary flags the command `generate` requires. If you want to create a new SSH key pair and add the public key to your Github account, you would do something like:
 ```
 crane-ssh generate --host=github.com --alias=github.com --keyName=github
 ```
