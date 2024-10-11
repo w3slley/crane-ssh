@@ -4,6 +4,14 @@ The common usecase for this tool, and in fact the reason I built it, is to make 
 ## Requirements
 - Go (developed with v1.22.4)
 
+
+## Installation
+
+To install, run:
+```
+curl -fsSL https://github.com/w3slley/crane-ssh.git/install.sh | bash
+```
+
 ## Usage
 Run the `start.sh` script. It will compile the Go code and place the executable in `/usr/local/bin` (password is only necessary for that). Then, run
 ```
@@ -31,3 +39,6 @@ ssh -T git@github.com
 ```
 
 You should see `Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.`. The same process applies to Bitbucket, Gitlab or any repository hosting manager tool or application that requires setting up SSH key pais as a method of authentication.
+
+## Uninstall
+To uninstall crane-ssh, run the `uninstall.sh` script. It will delete the executable from `.local/bin` and delete the `~/.crane-ssh` folder.
