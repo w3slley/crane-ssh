@@ -24,6 +24,14 @@ git clone "$repo_url" "$target_dir"
 
 cd "$target_dir"
 
+# Creating ~/.local if it doesn't exist
+if [ -d "$HOME/.local" ]; then
+    echo "Directory $target_bin_dir already exists."
+else
+  mkdir "$HOME/.local"
+fi
+
+# Creating ~/.local/bin if it doesn't exist
 if [ -d "$target_bin_dir" ]; then
     echo "Directory $target_bin_dir already exists."
 else
