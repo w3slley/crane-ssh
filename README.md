@@ -1,4 +1,4 @@
-# crane-ssh: a nicer way of configuring SSH keys
+# crane-ssh: a nicer way of configuring SSH keys for authentication
 The common usecase for this tool, and in fact the reason I built it, is to make the process of setting SSH key pairs with platforms like Github or Gitlab way easier. You just run the tool and it takes care of setting up the public and private keys (using `ssh-keygen`). At the end, you'll have the public key copied to the clipboard and all that is left is to go to the platform and paste the public key there.
 
 ## Requirements
@@ -42,4 +42,4 @@ ssh -T git@github.com
 You should see `Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.`. The same process applies to Bitbucket, Gitlab or any repository hosting manager tool or application that requires setting up SSH key pais as a method of authentication.
 
 ## Uninstall
-To uninstall crane-ssh, run the `uninstall.sh` script. It will delete the executable from `.local/bin` and delete the `~/.crane-ssh` folder.
+To uninstall crane-ssh, run the `uninstall.sh` script. It will delete the executable from `~/.local/bin` and delete the `~/.crane-ssh` folder.
