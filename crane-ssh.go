@@ -90,16 +90,17 @@ func runGenerate(host, alias, keyName, passphrase string) {
 		log.Fatalf("Failed to read public key: %v", err)
 	}
 
+	err = addToSSHConfig(sshDir, host, alias, keyName)
+	if err != nil {
+		log.Fatalf("Failed to update SSH config: %v", err)
+	}
+
 	err = clipboard.WriteAll(string(pubKey))
 	if err != nil {
 		log.Fatalf("Failed to copy public key to clipboard: %v", err)
 	}
 	fmt.Println("Public key copied to clipboard!")
 
-	err = addToSSHConfig(sshDir, host, alias, keyName)
-	if err != nil {
-		log.Fatalf("Failed to update SSH config: %v", err)
-	}
 }
 
 func generateSSHKey(sshDir, keyName, passphrase string) error {
