@@ -9,11 +9,12 @@ The common usecase for this tool, and in fact the reason I built it, is to make 
 
 To install, run:
 ```
-curl -fsSL https://github.com/w3slley/crane-ssh.git/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/w3slley/crane-ssh/main/install.sh | bash
 ```
 
 ## Usage
-Run the `start.sh` script. It will compile the Go code and place the executable in `/usr/local/bin` (password is only necessary for that). Then, run
+
+Run:
 ```
 crane-ssh generate --help
 ```
