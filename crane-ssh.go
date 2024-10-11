@@ -97,10 +97,12 @@ func runGenerate(host, alias, keyName, passphrase string) {
 
 	err = clipboard.WriteAll(string(pubKey))
 	if err != nil {
-		log.Fatalf("Failed to copy public key to clipboard: %v", err)
+		fmt.Printf("Failed to copy public key to clipboard: %v\n", err)
+		fmt.Printf("Falling back to showing public key created:\n\n")
+		fmt.Println(string(pubKey))
+	} else {
+		fmt.Println("Public key copied to clipboard!")
 	}
-	fmt.Println("Public key copied to clipboard!")
-
 }
 
 func generateSSHKey(sshDir, keyName, passphrase string) error {
