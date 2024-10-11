@@ -3,7 +3,7 @@ The common usecase for this tool, and in fact the reason I built it, is to make 
 
 ## Requirements
 - Go (developed with v1.22.4)
-
+- xclip or xsel (for Linux/Unix systems)
 
 ## Installation
 
