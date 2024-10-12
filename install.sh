@@ -61,4 +61,9 @@ else
 fi
 
 echo "Please restart your terminal or run: source $shell_rc"
-
+echo "cranne-ssh was installed successfully 🚀"
+cat <<'EOF'
+  ___ _ __ __ _ _ __   ___       ___ ___| |__  
+ / __| '__/ _` | '_ \ / _ \_____/ __/ __| '_ \ 
+| (__| | | (_| | | | |  __/_____\__ \__ \ | | |
+ \___|_|  \__,_|_| |_|\___|     |___/___/_| |_|
